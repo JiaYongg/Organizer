@@ -8,6 +8,7 @@ import Popup from "../components/Popup";
 
 import styles from "../css/MainPage.module.css"
 import AppNavBar from "../components/AppNavBar";
+import { useNavigate } from "react-router-dom";
 
 export default function MainPage() {
 
@@ -28,6 +29,8 @@ export default function MainPage() {
     const [updateReminderEnd, setUpdateReminderEnd] = useState("")
 
     const [editId, setEditId] = useState()
+
+    const navigate = useNavigate()
 
     //Get monthly Events
     async function getMonthEvents() {
@@ -107,9 +110,26 @@ export default function MainPage() {
 
     }
 
-    function onSelect(e) {
-        console.log(e.start)
+    async function getJournalId(date) {
+       const response = await axios.get(API+"/journal/detail", {
+            params : {
+                id: 5,
+                date: date 
+            }
+        })
         
+        console.log(response.data)
+        if (response.data) {
+            navigate(`/journal/canvas/${response.data.journal_id}`)
+        }
+
+        console.log(response)
+    }
+
+    function onSelect(e) {
+        console.log("triggered")
+        getJournalId(moment(e.start).format("YYYY-MM-DD"))
+            
     }
     // async function AddEvent() {}
 

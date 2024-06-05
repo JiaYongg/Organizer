@@ -40,6 +40,13 @@ export default function LandingPage() {
         triggerOnce: true, 
     });
     const { ref:refPower, inView:inViewPower } = useInView({
+        triggerOnce: true, 
+
+    });
+
+    const { ref:refLeft, inView:inViewLeft } = useInView({
+        triggerOnce: true, 
+
     });
 
     function Card ({image, name, review, reviewDate}){
@@ -74,7 +81,7 @@ export default function LandingPage() {
                         </div>
                     </div>
                     <p className={styles.description}>
-                        Streamline Your Day with Ease, Take Control of Your Schedule, and Reflect on the Past.  Exclusively through Us.
+                        Streamline Your Day with Ease, Take Control of Your Schedule, and Reflect on the Past. Exclusively through Us.
                     </p>
 
                     <div className={`${styles.get_started} poppins`}>
@@ -83,9 +90,10 @@ export default function LandingPage() {
                     </div>                   
                 </div>
             </section>
-            <section className={`${styles.detailsSection} poppins`} >
+            <section ref={refLeft} className={`${styles.detailsSection} poppins`} >
                 <div className={styles.left_image}>
-                    <img src="images/hand_writing.png" alt="" />
+                    <div className={inViewLeft?`${styles.color_img} ${styles.mask_animation}`:`${styles.color_img}`}></div>
+                    <img src="images/hand_writing_bw.png" alt="" />
                 </div>
                 <div className={styles.description}>
                     <div className={styles.desc_head}>

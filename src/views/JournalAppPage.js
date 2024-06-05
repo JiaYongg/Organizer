@@ -12,13 +12,13 @@ export default function JournalApp() {
     const params = useParams();
     const id = params.id;
 
-    async function postJournal(){
-        await axios.post(API + "/journal/add", {
-            content: content,
-            id : sessionStorage.getItem("uid"),
-            date: calendarDate
-        })
-    }
+    // async function postJournal(){
+    //     await axios.post(API + "/journal/add", {
+    //         content: content,
+    //         id : sessionStorage.getItem("uid"),
+    //         date: calendarDate
+    //     })
+    // }
 
     async function getJournal(){
         const response = await axios.get(API + "/journal/canvas", {

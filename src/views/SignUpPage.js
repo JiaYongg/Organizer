@@ -34,11 +34,22 @@ export default function SignUpPage() {
     }
 
     return (
-        <main>
+        <main className={styles.signup_bg}>
+             <div className={styles.nav}>
+                <div>
+                    <img src="images/org_colored.png" alt="" />
+                </div>
+                <ul className={styles.links}>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/login">Login</a></li>
+                </ul>
+            
+            </div>
+            <div className={`${styles.signup_container} poppins`}>
             <div className={styles.signup}>
                 <div className="top_text">
-                <h2>Hey You're new here</h2>
-                <h1>Ready to <span className="hightlight-1">organize</span>?</h1>
+                    <h3>Hey You're new here</h3>
+                    <h1>Ready to <span className="highlight-1">organize</span>?</h1>
                 </div>
 
                 <form >
@@ -46,22 +57,26 @@ export default function SignUpPage() {
                     <div className={styles.row}>
                         <div className={styles.form_input}>
                             <label htmlFor="">Username</label>
-                            <input type="text" placeholder="Enter first name" value={username} onChange={(e)=> setUserName(e.target.value)}/>
+                            <input type="text" value={username} onChange={(e)=> setUserName(e.target.value)}/>
                         </div>
 
                     </div>
                     <div className={styles.row}>
                         <div className={styles.form_input}>
                             <label htmlFor="">Email Address</label>
-                            <input type="text" placeholder="Email" value={email} onChange={(e)=> setEmail(e.target.value)}/>
+                            <input type="text"  value={email} onChange={(e)=> setEmail(e.target.value)}/>
                         </div>
                     </div>
                     <div className={styles.row}>
-                        <div className={styles.form_input}>
+                        <div className={`${styles.form_input} ${styles.last_form_input}`}>
                             <label htmlFor="">Password</label>
-                            <input type="password" placeholder="Password" value={password} onChange={(e)=> setPassword(e.target.value)}/>
+                            <input type="password"  value={password} onChange={(e)=> setPassword(e.target.value)}/>
                         </div>
                     </div>
+                    <div className = {styles.login}>
+                        <p>Already a member? <a href="" className="highlight-1">Login here</a></p>
+                    </div>
+
                 </form>
 
                 <button className={styles.join_us} onClick={() => {
@@ -70,7 +85,10 @@ export default function SignUpPage() {
 
 
             </div>
+        </div>
+
         </main>
+        
     )
 
 }

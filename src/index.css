@@ -26,6 +26,17 @@ input:focus{
   outline: none;
 }
 
+.mask_animation {
+  .color_img {
+      animation: addColor 2000ms steps(69) forwards;
+      .mask_animation {
+        .color_img {
+            animation: addColor 2000ms steps(69) forwards;
+
+        }
+    }
+  }
+}
 
 :root {
   --primary-color: #3A5DE9;
