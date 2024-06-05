@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react"
+import React, {useState} from "react"
 import { useNavigate } from "react-router-dom";
 import { Button, Container, Form } from "react-bootstrap";
 import axios from "axios"
@@ -7,7 +7,6 @@ import {API} from "../constants"
 export default function LoginPage() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
     const navigate = useNavigate();
     
     async function login(){
@@ -58,7 +57,6 @@ export default function LoginPage() {
             Login
             </Button>
         </Form>
-        <p>{error}</p>
     </Container>
     </>
     )
