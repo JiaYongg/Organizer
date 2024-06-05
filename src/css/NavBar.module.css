@@ -22,7 +22,7 @@
         width: 100%;
         padding: 0;
         margin: 0;
-        font-size: 12px;
+        font-size: 14px;
         
         li {
             list-style: none;
@@ -30,8 +30,16 @@
             a{
                 text-decoration: none;
                 color: var(--dark-bg-text);
+                opacity: 0.7;
+                transition: 300ms ease;
+            }
+
+            a:hover{
+                opacity: 1;
             }
         }
+
+        
     }
 
     .login_button {
@@ -40,10 +48,29 @@
         background-color: var(--bg-color);
         border-radius: 100px;
         font-weight: 600;
+        opacity: 0.7;
+        transition: 300ms ease;
+    }
+
+    .login_button:hover {
+        opacity: 1;
+
     }
 }
 
 .nav_component:nth-of-type(3) {
     justify-content: end;
+}
+
+@keyframes fall {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to  {
+        opacity: 1;
+        transform: translateY();
+    }
 }
 

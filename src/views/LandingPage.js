@@ -37,7 +37,7 @@ export default function LandingPage() {
 
 
     const { ref:refComments, inView:inViewComments } = useInView({
-        triggerOnce:true
+        triggerOnce: true, 
     });
     const { ref:refPower, inView:inViewPower } = useInView({
     });

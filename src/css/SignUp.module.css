@@ -1,0 +1,54 @@
+
+
+.signup {
+    margin: 50px 100px;
+    height: 100vh;
+}
+
+.form_input {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #D7D7D7;
+    margin: 10px 0px;
+    padding: 10px;
+    width: 100%;
+    
+    label {
+        margin-bottom: 5px;
+        font-size: 12px;
+        color: var(--secondary-text);
+    }
+
+    input {
+        border: none;
+        outline: none;
+
+        font-size: 16px;
+
+    }
+}
+
+
+form {
+    p {
+        padding: 0;
+        margin: 0;
+    }
+}
+
+.row {
+    display: flex;
+    width: 100%;
+    gap: 30px;
+}
+
+
+.join_us {
+    width: 100%;
+    background-color: var(--primary-color);
+    color:  #fff;
+    padding: 15px 0px;
+    border-radius: 100px;
+    border: none;
+    outline: none;
+}

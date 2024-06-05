@@ -1,9 +1,9 @@
 
 
 --@block
-DROP TABLE prompt_category;
-DROP TABLE prompts;
 DROP TABLE journal_prompt;
+DROP TABLE prompts;
+DROP TABLE prompt_category;
 DROP TABLE images;
 DROP TABLE journal_entries;
 DROP TABLE calendar_reminders;
@@ -27,9 +27,7 @@ CREATE TABLE users (
     user_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
     username VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
-    created_date DATETIME NOT NULL,
-    updated_date DATETIME
+    password_hash VARCHAR(255) NOT NULL
 )
 
 --@block
@@ -40,8 +38,6 @@ SELECT * FROM users
 CREATE TABLE calendar_entry (
     calendar_date DATE NOT NULL,
     user_id INT NOT NULL,
-    created_date DATETIME NOT NULL,
-    updated_date DATETIME,
     PRIMARY KEY(calendar_date, user_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 )
@@ -68,8 +64,6 @@ CREATE TABLE calendar_reminders (
     category_id INT NOT NULL,
     user_id INT NOT NULL,
     calendar_date DATE NOT NULL,
-    created_date DATETIME NOT NULL,
-    updated_date DATETIME,
     FOREIGN KEY (user_id) REFERENCES calendar_entry(user_id),
     FOREIGN KEY (category_id) REFERENCES reminder_categories(category_id),
     FOREIGN KEY (calendar_date) REFERENCES calendar_entry(calendar_date)
@@ -83,8 +77,6 @@ SELECT * FROM calendar_reminders
 CREATE TABLE journal_entries (
     journal_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     content TEXT,
-    created_date DATETIME NOT NULL,
-    updated_date DATETIME,
     user_id INT NOT NULL,
     calendar_date DATE NOT NULL,
     FOREIGN KEY (user_id) REFERENCES calendar_entry(user_id),
@@ -99,8 +91,6 @@ CREATE TABLE images (
     image_id INT PRIMARY KEY AUTO_INCREMENT,
     journal_id INT NOT NULL,
     image_url VARCHAR(255) NOT NULL,
-    created_date DATETIME NOT NULL,
-    updated_date DATETIME,
     FOREIGN KEY (journal_id) REFERENCES journal_entries(journal_id)
 )
 
