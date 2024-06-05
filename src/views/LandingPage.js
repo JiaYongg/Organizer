@@ -3,10 +3,11 @@ import Navbar from "../components/Navbar"
 import PageSection from "../components/PageSection"
 import styles from "../css/LandingPage.module.css"
 import { useInView } from "react-intersection-observer";
+import useDocumentTitle from "../components/useDocumentTitle";
 
 
 export default function LandingPage() {
-    
+    useDocumentTitle("Home")
     const reviewList = [
         {
             image: "https://images.pexels.com/photos/240561/pexels-photo-240561.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
