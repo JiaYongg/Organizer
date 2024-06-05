@@ -44,9 +44,9 @@ export default function JournalApp() {
     }
 
     useEffect(() => {
-        if (sessionStorage.getItem("uid") === null){
-            return navigate("/login");
-        }
+        // if (sessionStorage.getItem("uid") === null){
+        //     return navigate("/login");
+        // }
         getJournal();
     }, []);
 
