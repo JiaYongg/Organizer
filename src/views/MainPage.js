@@ -4,21 +4,18 @@ import axios from "axios";
 import { API, REM } from "../constants"
 import { Calendar, momentLocalizer } from "react-big-calendar"
 import moment from "moment"
+import Popup from "../components/Popup";
 
 import styles from "../css/MainPage.module.css"
 import AppNavBar from "../components/AppNavBar";
 
 export default function MainPage() {
 
-    const thisMonth = getThisMonth()
-
     const id = 1
-
-    const [start, setStart] = useState(thisMonth['start'])
-    const [end, setEnd] =  useState(thisMonth['end'])
 
     const [reminders, setReminders] = useState([])
     const [addPopup, setAddPopup] = useState(false)
+    const [updatePopup, setUpdatePopup] = useState(false)
 
     const localizer = momentLocalizer(moment)
 
@@ -26,6 +23,11 @@ export default function MainPage() {
     const [newReminderStart, setNewReminderStart] = useState("")
     const [newReminderEnd, setNewReminderEnd] = useState("")
 
+    const [updateReminderTitle, setUpdateReminderTitle] = useState("")
+    const [updateReminderStart, setUpdateReminderStart] = useState("")
+    const [updateReminderEnd, setUpdateReminderEnd] = useState("")
+
+    const [editId, setEditId] = useState()
 
     //Get monthly Events
     async function getMonthEvents() {
@@ -40,9 +42,10 @@ export default function MainPage() {
 
             let formattedReminders = reminders.map((reminder) => {
                 return {
-                    start: moment(reminder.start).toDate(),
-                    end: moment(reminder.end).toDate(),
-                    title: reminder.title
+                    start: moment(reminder.start.slice(0, -1)).toDate(),
+                    end: moment(reminder.end.slice(0, -1)).toDate(),
+                    title: reminder.title,
+                    reminder_id: reminder.reminder_id
                 }
             })
 
@@ -61,7 +64,7 @@ export default function MainPage() {
             end: newReminderEnd
         }
 
-        const response = await axios.post(API + REM, {
+        await axios.post(API + REM, {
             ...reminder
         })
 
@@ -70,22 +73,60 @@ export default function MainPage() {
         
     }
 
+    async function getSingleReminder(rem_id) {
+        const details =  await axios.get(API+REM+`/${rem_id}`)
+        console.log(details)
+        setUpdateReminderTitle(details.data.title)
+        setUpdateReminderStart(moment(details.data.start.slice(0, -1)).format('YYYY-MM-DDTHH:mm'))
+        setUpdateReminderEnd(moment(details.data.end.slice(0, -1)).format('YYYY-MM-DDTHH:mm'))
+    }
+
+
+    async function updateEvent() {
+        const reminder = {
+            reminder_id: editId,
+            title: updateReminderTitle,
+            start: updateReminderStart,
+            end: updateReminderEnd
+        }
+
+        await axios.put(API + REM, {
+            ...reminder
+        })
+
+        getMonthEvents()
+        setUpdatePopup(false)
+        
+    }
+
+    async function deleteEvent() {
+        await axios.delete(API + REM + `/${editId}`)
+
+        getMonthEvents()
+        setUpdatePopup(false)
+
+    }
+
     function onSelect(e) {
         console.log(e.start)
-        alert(convertToSQLDate(e.start))
+        
     }
     // async function AddEvent() {}
 
     useEffect(() => {
         getMonthEvents()
-    }, [start, end])
+    }, [])
 
 
     const components =  {
         event: (props) => {
             return (
-                <div onClick={() => alert("hello")}>
-                    Hello
+                <div className={styles.calendar_item} onClick={() => {
+                    setEditId(props.event.reminder_id)
+                    setUpdatePopup((prev) => !prev)
+                    getSingleReminder(props.event.reminder_id)
+                }}>
+                    <p>{moment(props.event.start).format('h:mm a')} - {moment(props.event.end).format(' h:mm a')} {props.title}</p>
                 </div>
             )
         },
@@ -103,10 +144,7 @@ export default function MainPage() {
                 <p>+</p>
             </button>
 
-            <div className={addPopup?`${styles.add} ${styles.active}`:`${styles.add}`} draggable="true">
-                <div className={styles.exit}>
-                    <i className='bx bx-x' onClick={() => {setAddPopup((prev) => !prev)}}></i>
-                </div>
+            <Popup activePopup={addPopup} setActivePopup={setAddPopup}>
                 <div className={styles.content}>
                     <h1>Add new Reminder</h1>
                     <input type="text" placeholder="Add title" value={newReminderTitle} onChange={(e) => {setNewReminderTitle(e.target.value)}}/>
@@ -118,7 +156,30 @@ export default function MainPage() {
                         addEvent()
                     }}>Add Entry</button>        
                 </div>    
-            </div>
+            </Popup>
+
+            <Popup activePopup={updatePopup} setActivePopup={setUpdatePopup}>
+                <div className={styles.content}>
+                    <h1>Edit Reminder</h1>
+                    <input type="text" placeholder="Edit title" value={updateReminderTitle} onChange={(e) => {setUpdateReminderTitle(e.target.value)}}/>
+                    <div>
+                        From <input type='datetime-local' value={updateReminderStart} onChange={(e) => {setUpdateReminderStart(e.target.value)}}/> to  <input type='datetime-local' value={updateReminderEnd} onChange={(e) => setUpdateReminderEnd(e.target.value)} />
+                    </div>        
+
+                    <div className={styles.buttons}>
+                        <button onClick={() => {
+                            updateEvent()
+                        }}>Update Entry</button> 
+                        
+                        <button onClick={() => {
+                            deleteEvent()
+                        }}>Delete</button> 
+                    </div>
+          
+                    
+             
+                </div>
+            </Popup>
         </main>
     )
 
