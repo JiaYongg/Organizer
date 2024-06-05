@@ -7,7 +7,6 @@ import LoginPage from './views/LoginPage';
 import ContactUsPage from './views/ContactUsPage';
 import MainPage from './views/MainPage';
 import JournalPage from './views/JournalPage';
-import JournalDetailPage from './views/JournalDetailPage';
 import JournalAppPage from './views/JournalAppPage';
 
 const router  = createBrowserRouter([
@@ -38,10 +37,6 @@ const router  = createBrowserRouter([
   {
     path:'/journal',
     element : <JournalPage />
-  },
-  {
-    path:'/journal/detail',
-    element : <JournalDetailPage />
   },
   {
     path:'/journal/canvas/:id',
