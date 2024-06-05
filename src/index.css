@@ -22,6 +22,10 @@ code {
   font-family: 'Lato';
 }
 
+input:focus{
+  outline: none;
+}
+
 
 :root {
   --primary-color: #3A5DE9;
@@ -42,3 +46,5 @@ code {
 .highlight-2 {
   color: var(--secondary-color);
 }
+
+

@@ -4,12 +4,15 @@
 DROP TABLE journal_prompt;
 DROP TABLE prompts;
 DROP TABLE prompt_category;
-DROP TABLE images;
 DROP TABLE journal_entries;
 DROP TABLE calendar_reminders;
 DROP TABLE calendar_entry;
 DROP TABLE reminder_categories;
-DROP TABLE users;
+-- DROP TABLE users;
+
+
+--@block
+DROP TABLE calendar_reminders;
 
 
 --@block
@@ -35,12 +38,12 @@ SELECT * FROM users
 
 
 --@block 
-CREATE TABLE calendar_entry (
-    calendar_date DATE NOT NULL,
-    user_id INT NOT NULL,
-    PRIMARY KEY(calendar_date, user_id),
-    FOREIGN KEY (user_id) REFERENCES users(user_id)
-)
+-- CREATE TABLE calendar_entry (
+--     calendar_date DATE NOT NULL,
+--     user_id INT NOT NULL,
+--     PRIMARY KEY(calendar_date, user_id),
+--     FOREIGN KEY (user_id) REFERENCES users(user_id)
+-- )
 
 --@block
 SELECT * FROM calendar_entry
@@ -58,20 +61,29 @@ SELECT * FROM reminder_categories
 
 --@block
 CREATE TABLE calendar_reminders (
-    reminder_id INT NOT NULL PRIMARY KEY,
-    reminder_time TIMESTAMP NOT NULL,
-    reminder_message TEXT NOT NULL,
-    category_id INT NOT NULL,
+    reminder_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    title TEXT NOT NULL,
+    -- category_id INT NOT NULL,
     user_id INT NOT NULL,
-    calendar_date DATE NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES calendar_entry(user_id),
-    FOREIGN KEY (category_id) REFERENCES reminder_categories(category_id),
-    FOREIGN KEY (calendar_date) REFERENCES calendar_entry(calendar_date)
-
+    start DATETIME NOT NULL,
+    end DATETIME NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+    -- FOREIGN KEY (category_id) REFERENCES reminder_categories(category_id),
 )
 
 --@block
-SELECT * FROM calendar_reminders
+INSERT INTO calendar_reminders (reminder_id, title, user_id, start, end)
+VALUES 
+(1, 'Doctor appointment', 1, '2024-06-10 09:00:00', '2024-06-10 10:00:00'),
+(2, 'Meeting with team', 1, '2024-06-15 14:00:00', '2024-06-15 15:00:00'),
+(3, 'Lunch with friend', 1, '2024-06-20 12:30:00', '2024-06-20 13:30:00'),
+(4, 'Gym session', 1, '2024-06-25 18:00:00', '2024-06-25 19:00:00');
+
+--@block
+SELECT * FROM calendar_reminders WHERE user_id = 1
+
+--@block 
+SELECT * FROM calendar_reminders WHERE user_id = 1 AND start BETWEEN "2024-06-10 00:00:00" AND "2024-06-11 00:00:00"
 
 --@block
 CREATE TABLE journal_entries (
@@ -79,8 +91,7 @@ CREATE TABLE journal_entries (
     content TEXT,
     user_id INT NOT NULL,
     calendar_date DATE NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES calendar_entry(user_id),
-    FOREIGN KEY (calendar_date) REFERENCES calendar_entry(calendar_date)
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
 )
 
 --@block
