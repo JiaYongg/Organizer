@@ -5,6 +5,7 @@ import AboutUsPage from './views/AboutUsPage';
 import SignUpPage from './views/SignUpPage';
 import LoginPage from './views/LoginPage';
 import ContactUsPage from './views/ContactUsPage';
+import MainPage from './views/MainPage';
 
 const router  = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const router  = createBrowserRouter([
   {
     path:'/signup',
     element: <SignUpPage />
+  },
+  {
+    path:'/main',
+    element : <MainPage />
   }
 ])
 function App() {

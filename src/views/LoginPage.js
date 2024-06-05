@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react"
 import { useNavigate } from "react-router-dom";
 import { Button, Container, Form } from "react-bootstrap";
 import axios from "axios"
+import {API} from "../constants"
 
 export default function LoginPage() {
     const [username, setUsername] = useState("");
@@ -9,6 +10,22 @@ export default function LoginPage() {
     const [error, setError] = useState("");
     const navigate = useNavigate();
     
+    async function login(){
+        const response = await axios.post(API + "/user/login", {
+            username: username,
+            password: password
+        })
+        const data = response.data;
+        console.log(data);
+        if (!data){
+            alert("Invalid username or password");
+            return;
+        }
+        else{
+            navigate("/main");
+        }
+    }
+
     return (
     <Container>
         <h1 className="my-3">Login to your account</h1>
@@ -37,6 +54,7 @@ export default function LoginPage() {
             <a href="/signup">Sign up for an account</a>
             </Form.Group>
             <Button variant="primary" onClick={async (e) => {
+                login();
             }}>
             Login
             </Button>
