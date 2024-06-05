@@ -6,6 +6,7 @@ import { Calendar, momentLocalizer } from "react-big-calendar"
 import moment from "moment"
 
 import styles from "../css/MainPage.module.css"
+import AppNavBar from "../components/AppNavBar";
 
 export default function MainPage() {
 
@@ -93,12 +94,7 @@ export default function MainPage() {
     return (
         <main>
             
-            <div className={styles.nav}>
-                <div>Header</div>
-                <div>
-                    <button>Logout</button>
-                </div>
-            </div>
+            <AppNavBar/>
             <div className={styles.calander_cont}>
                 <Calendar localizer={localizer} startAccessor="start" endAccessor="end" events={reminders} components={components} selectable onSelectSlot={(e) => onSelect(e)}/>
             </div>

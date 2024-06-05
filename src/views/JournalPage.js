@@ -3,15 +3,17 @@ import { useNavigate } from "react-router-dom";
 import { Button, Container, Form } from "react-bootstrap";
 import axios from "axios"
 import {API} from "../constants"
+import AppNavBar from "../components/AppNavBar";
 
 export default function JournalPage() {
     const [content, setContent] = useState("");
     const [calendarDate, setCalendarDate] = useState("");
     const [journalList, setJournalList] = useState([]);
+    const navigate = useNavigate();
 
     async function getAllJournal(){ // add this function to useeffect later, also change the params id to take the id of the user that logged in
         const response = await axios.get(API + "/journal", {
-            params : {id: 2} // this is userid
+            params : {id: sessionStorage.getItem("uid")}
         })
         const data = response.data;
         setJournalList(data);
@@ -21,7 +23,7 @@ export default function JournalPage() {
     async function postJournal(){
         await axios.post(API + "/journal/add", {
             content: content,
-            id : 1, // need to change the id later to a dynamic one when user logs in
+            id : sessionStorage.getItem("uid"), // need to change the id later to a dynamic one when user logs in
             date: calendarDate
         })
     }
@@ -34,6 +36,9 @@ export default function JournalPage() {
     }
 
     useEffect(() => {
+        if (sessionStorage.getItem("uid") === null){
+            return navigate("/login");
+        }
         getAllJournal();
     }, []);
 
@@ -43,6 +48,8 @@ export default function JournalPage() {
     };
 
     return (
+    <>
+    <AppNavBar/>
     <Container>
         <h1 className="my-3">My Journal</h1>
         <Container>
@@ -62,6 +69,7 @@ export default function JournalPage() {
 
         </Container>
     </Container>
+    </>
     )
 
 }

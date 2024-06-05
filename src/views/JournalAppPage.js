@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button, Container, Form } from "react-bootstrap";
 import axios from "axios"
 import {API} from "../constants"
+import AppNavBar from "../components/AppNavBar";
 
 export default function JournalApp() {
     const [content, setContent] = useState("");
@@ -14,7 +15,7 @@ export default function JournalApp() {
     async function postJournal(){
         await axios.post(API + "/journal/add", {
             content: content,
-            id : 1, // need to change the id later to a dynamic one when user logs in
+            id : sessionStorage.getItem("uid"),
             date: calendarDate
         })
     }
@@ -43,11 +44,16 @@ export default function JournalApp() {
     }
 
     useEffect(() => {
+        if (sessionStorage.getItem("uid") === null){
+            return navigate("/login");
+        }
         getJournal();
     }, []);
 
 
     return (
+        <>
+        <AppNavBar/>
         <Container>
             <h1 className="my-3">My Journal</h1>
             <Form>
@@ -73,5 +79,6 @@ export default function JournalApp() {
             </Form>
             <p></p>
         </Container>
+        </>
         )
 }

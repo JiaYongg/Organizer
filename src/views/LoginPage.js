@@ -22,11 +22,13 @@ export default function LoginPage() {
             return;
         }
         else{
+            sessionStorage.setItem("uid", data.user_id);
             navigate("/main");
         }
     }
 
     return (
+    <>
     <Container>
         <h1 className="my-3">Login to your account</h1>
         <Form>
@@ -58,6 +60,7 @@ export default function LoginPage() {
         </Form>
         <p>{error}</p>
     </Container>
+    </>
     )
 
 }
