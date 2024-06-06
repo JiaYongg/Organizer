@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react"
+import React, {useState, useEffect, useCallback} from "react"
 import useDocumentTitle from "../components/useDocumentTitle"
 import axios from "axios";
 import { API, REM } from "../constants"
@@ -38,6 +38,9 @@ export default function MainPage() {
     const [currentView, setCurrentView] = useState(Views.MONTH)
     const [editDate, setEditDate] = useState('')
     const [journalContent, setJournalContent] = useState("")
+
+    const [date, setDate] = useState(moment(new Date()).toDate())
+
     const navigate = useNavigate()
 
     const View_list = {
@@ -182,6 +185,19 @@ export default function MainPage() {
     }
     // async function AddEvent() {}
 
+    const onNextClick = useCallback(() => {
+        if (currentView === Views.DAY) setDate((prev) => moment(prev).add(1, "d").toDate())
+        if (currentView === Views.WEEK) setDate((prev) => moment(prev).add(1, "w").toDate())
+        if (currentView === Views.MONTH) setDate((prev) => moment(prev).add(1, "M").toDate())
+    })
+
+
+    const onPrevClick = useCallback(() => {
+        if (currentView === Views.DAY) setDate((prev) => moment(prev).subtract(1, "d").toDate())
+        if (currentView === Views.WEEK) setDate((prev) => moment(prev).subtract(1, "w").toDate())
+        if (currentView === Views.MONTH) setDate((prev) => moment(prev).subtract(1, "M").toDate())
+    })
+
     useEffect(() => {
         if (sessionStorage.getItem("uid") === null){
             return navigate("/login");
@@ -227,10 +243,10 @@ export default function MainPage() {
                     </div>
                 </div>
                 <div className={styles.calander_cont}>
-                    <Calendar view={currentView} toolbar={false} localizer={localizer} startAccessor="start" endAccessor="end" events={reminders} components={components} selectable onSelectSlot={(e) => onSelect(e)}/>
+                    <Calendar date={date} view={currentView} toolbar={false} localizer={localizer} startAccessor="start" endAccessor="end" events={reminders} components={components} selectable onSelectSlot={(e) => onSelect(e)}/>
                 </div>
-                <div class={styles.toolbar}>
-                    <div class={styles.calendar_controls}>
+                <div className={styles.toolbar}>
+                    <div className={styles.calendar_controls}>
                         <div onClick={() => toggleView("d")} className={(toggleCalendar==="d")?`${styles.control} ${styles.active}`: styles.control}>
                             Day 
                         </div>
@@ -239,6 +255,15 @@ export default function MainPage() {
                         </div>
                         <div onClick={() => toggleView("m")} className={(toggleCalendar==="m")?`${styles.control} ${styles.active}`: styles.control}>
                             Month 
+                        </div>
+
+                        <div className={styles.row}>
+                            <div onClick={onPrevClick}>
+                                <i className='bx bx-left-arrow-alt' ></i>
+                            </div>
+                            <div onClick={onNextClick}>
+                                <i className='bx bx-right-arrow-alt' ></i>
+                            </div>
                         </div>
                     </div>
                     <button className={styles.add_button} onClick={() => {
