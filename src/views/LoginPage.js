@@ -31,7 +31,7 @@ export default function LoginPage() {
     }
 
     return (
-    <main className={styles.login_bg}>
+    <div className={styles.login_bg}>
     <div className={styles.nav}>
        <div>
            <img src="images/org_colored.png" alt="" />
@@ -78,7 +78,7 @@ export default function LoginPage() {
         </div>
         </div>
 
-        </main>
+        </div>
 
 
     )

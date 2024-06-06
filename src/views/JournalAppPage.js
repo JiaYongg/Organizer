@@ -5,20 +5,13 @@ import axios from "axios"
 import {API} from "../constants"
 import AppNavBar from "../components/AppNavBar";
 
+
 export default function JournalApp() {
     const [content, setContent] = useState("");
     const [calendarDate, setCalendarDate] = useState("");
     const navigate = useNavigate();
     const params = useParams();
     const id = params.id;
-
-    // async function postJournal(){
-    //     await axios.post(API + "/journal/add", {
-    //         content: content,
-    //         id : sessionStorage.getItem("uid"),
-    //         date: calendarDate
-    //     })
-    // }
 
     async function getJournal(){
         const response = await axios.get(API + "/journal/canvas", {
@@ -51,9 +44,9 @@ export default function JournalApp() {
     };
 
     useEffect(() => {
-        // if (sessionStorage.getItem("uid") === null){
-        //     return navigate("/login");
-        // }
+        if (sessionStorage.getItem("uid") === null){
+            return navigate("/login");
+        }
         getJournal();
     }, []);
 

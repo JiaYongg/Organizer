@@ -30,17 +30,12 @@ export default function JournalPage() {
         console.log(data);
     }
 
-    async function deleteJournal(id){
-        await axios.delete(API + "/journal/delete", {
-            params : {id: id} // change the id and date to not hard coded later
-        })
-        getAllJournal();
-    }
+
 
     useEffect(() => {
-        // if (sessionStorage.getItem("uid") === null){
-        //     return navigate("/login");
-        // }
+        if (sessionStorage.getItem("uid") === null){
+            return navigate("/login");
+        }
         getAllJournal();
     }, []);
 
@@ -51,7 +46,7 @@ export default function JournalPage() {
     };
 
     return (
-    <main style={{backgroundColor: "rgb(216, 216, 255)"}}>
+    <main style={{backgroundColor: "rgb(216, 216, 255)", minHeight: "700px"}}>
     <AppNavBar/>
     <Container style={{overflow:"auto", padding: "20px", backgroundColor: "white"}}>
         <Container>

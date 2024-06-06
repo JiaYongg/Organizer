@@ -14,7 +14,7 @@ export default function MainPage() {
 
     const today = new Date()
 
-    const id = 1
+    const id = sessionStorage.getItem("uid")
     useDocumentTitle("Calander Board")
     const [reminders, setReminders] = useState([])
     const [addPopup, setAddPopup] = useState(false)
@@ -94,8 +94,7 @@ export default function MainPage() {
         console.log(journalContent, calendarDate)
         const response = await axios.post(API + "/journal/add", {
             content: journalContent,
-            // id : sessionStorage.getItem("uid"),
-            id : 5,
+            id : sessionStorage.getItem("uid"),
             date: calendarDate
         })
 
@@ -160,7 +159,7 @@ export default function MainPage() {
         setUpdatePopup(false)
        const response = await axios.get(API+"/journal/detail", {
             params : {
-                id: 5,
+                id: sessionStorage.getItem("uid"),
                 date: date 
             }
         })
@@ -184,6 +183,9 @@ export default function MainPage() {
     // async function AddEvent() {}
 
     useEffect(() => {
+        if (sessionStorage.getItem("uid") === null){
+            return navigate("/login");
+        }
         getMonthEvents()
     }, [])
 

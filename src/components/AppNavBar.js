@@ -1,5 +1,7 @@
 import {useNavigate} from 'react-router-dom'
 import styles from '../css/AppNavBar.module.css'
+import image from "./logo.png"
+
 
 export default function AppNavBar() {
     const navigate = useNavigate();
@@ -12,7 +14,7 @@ export default function AppNavBar() {
     return (
         <div className={styles.nav}>
         <div className={styles.img_div}>
-            <img src="images/logo.png" alt="" />
+            <img src={image} alt="" />
         </div>
         <ul className={styles.links}>
             <li><a href="/main"><i className='bx bx-calendar'></i><p>Calendar</p></a></li>

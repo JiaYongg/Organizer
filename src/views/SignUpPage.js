@@ -25,8 +25,10 @@ export default function SignUpPage() {
         console.log(signup)
 
         try {
-            await axios.post(API+'/user/signup', signup);
-            navigate("/")
+            const response = await axios.post(API+'/user/signup', signup);
+            console.log(response.data.uid)
+            sessionStorage.setItem("uid", response.data.uid);
+            navigate("/main")
 
         }catch(error) {
             console.error(error.message)
@@ -34,7 +36,7 @@ export default function SignUpPage() {
     }
 
     return (
-        <main className={styles.signup_bg}>
+        <div className={styles.signup_bg}>
              <div className={styles.nav}>
                 <div>
                     <img src="images/org_colored.png" alt="" />
@@ -87,7 +89,7 @@ export default function SignUpPage() {
             </div>
         </div>
 
-        </main>
+        </div>
         
     )
 
