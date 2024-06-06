@@ -35,6 +35,8 @@ export default function JournalApp() {
             content: content,
             id: id
         })
+        alert("Journal entry edited successfully");
+        navigate("/journal");
     }
 
     async function deleteJournal(){
