@@ -73,7 +73,7 @@ export default function LandingPage() {
     }
 
     return (
-        <main>
+        <div>
             <section className={styles.landingSection}>
                 <Navbar />
                 <div className={styles.introduction}>
@@ -191,7 +191,7 @@ export default function LandingPage() {
                     })}                    
                 </div>
             </section>
-        </main>
+        </div>
     )
 
 }
