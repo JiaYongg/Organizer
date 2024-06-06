@@ -22,10 +22,11 @@ export default function JournalApp() {
 
     async function getJournal(){
         const response = await axios.get(API + "/journal/canvas", {
-            params : {id: id}
+            params : {id: id, calendarDate: calendarDate}
         })
         const data = response.data;
         setContent(data.content);
+        setCalendarDate(data.calendar_date);
         console.log(data);
     }
 
@@ -42,6 +43,12 @@ export default function JournalApp() {
         })
         navigate("/journal");
     }
+    
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const options = { day: 'numeric', month: 'long', year: 'numeric' };
+        return date.toLocaleDateString('en-GB', options);
+    };
 
     useEffect(() => {
         // if (sessionStorage.getItem("uid") === null){
@@ -55,7 +62,7 @@ export default function JournalApp() {
         <main  styles={{display: "flex", height: "100vh"}}>
         <AppNavBar/>
         <Container>
-            <h1 className="my-3">My Journal</h1>
+            <h1 className="my-3">{formatDate(calendarDate)}'s Journal</h1>
             <Form>
                 <Form.Group className="mb-3">
                 <Form.Label>Content</Form.Label>

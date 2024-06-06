@@ -44,7 +44,8 @@ export default function JournalPage() {
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
-        return date.toLocaleDateString('en-CA'); // en-CA format is YYYY-MM-DD
+        const options = { day: 'numeric', month: 'long', year: 'numeric' };
+        return date.toLocaleDateString('en-GB', options);
     };
 
     return (
@@ -55,15 +56,10 @@ export default function JournalPage() {
         <Container>
         {     journalList.map((journal) => {
                 return (
-                
-                    <div> 
+                    <Container>
                         <a href={`/journal/canvas/${journal.journal_id}`}> <li>Journal Number: {journal.journal_id} - {formatDate(journal.calendar_date)}</li></a>
-                        <Button variant="primary" onClick={async (e) => {
-                    deleteJournal(journal.journal_id);
-                }}>
-                Delete
-                </Button>
-                    </div> 
+                        <Button variant="primary" onClick={async (e) => {deleteJournal(journal.journal_id);}}>Delete</Button>
+                    </Container> 
                 
         )})}
 
