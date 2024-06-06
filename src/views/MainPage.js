@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from "react"
+import React, {useState, useEffect, useCallback, useMemo} from "react"
 import useDocumentTitle from "../components/useDocumentTitle"
 import axios from "axios";
 import { API, REM } from "../constants"
@@ -198,6 +198,20 @@ export default function MainPage() {
         if (currentView === Views.MONTH) setDate((prev) => moment(prev).subtract(1, "M").toDate())
     })
 
+    const dateText = useMemo(() => {
+        if (currentView=== Views.DAY) return moment(date).format("dddd, MMMM DD");
+        if (currentView=== Views.WEEK) {
+            const from = moment(date)?.startOf("week");
+            const to = moment(date)?.endOf("week");
+
+            return `${from.format("MMMM DD")} to ${to.format("MMMM DD")}`
+        }
+        
+        if (currentView === Views.MONTH) {
+            return moment(date).format("MMMM YYYY")
+        }
+    }, [currentView, date])
+
     useEffect(() => {
         if (sessionStorage.getItem("uid") === null){
             return navigate("/login");
@@ -243,6 +257,7 @@ export default function MainPage() {
                     </div>
                 </div>
                 <div className={styles.calander_cont}>
+                    <h3 style={{fontSize: "20px"}}>{dateText}</h3>
                     <Calendar date={date} view={currentView} toolbar={false} localizer={localizer} startAccessor="start" endAccessor="end" events={reminders} components={components} selectable onSelectSlot={(e) => onSelect(e)}/>
                 </div>
                 <div className={styles.toolbar}>
