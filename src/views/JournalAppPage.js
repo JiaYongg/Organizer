@@ -22,10 +22,11 @@ export default function JournalApp() {
 
     async function getJournal(){
         const response = await axios.get(API + "/journal/canvas", {
-            params : {id: id}
+            params : {id: id, calendarDate: calendarDate}
         })
         const data = response.data;
         setContent(data.content);
+        setCalendarDate(data.calendar_date);
         console.log(data);
     }
 
@@ -42,6 +43,12 @@ export default function JournalApp() {
         })
         navigate("/journal");
     }
+    
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const options = { day: 'numeric', month: 'long', year: 'numeric' };
+        return date.toLocaleDateString('en-GB', options);
+    };
 
     useEffect(() => {
         // if (sessionStorage.getItem("uid") === null){
@@ -55,15 +62,17 @@ export default function JournalApp() {
         <main  styles={{display: "flex", height: "100vh"}}>
         <AppNavBar/>
         <Container>
-            <h1 className="my-3">My Journal</h1>
+            <h1 style={{marginTop: "50px"}}>{formatDate(calendarDate)}'s Journal</h1>
             <Form>
-                <Form.Group className="mb-3">
-                <Form.Label>Content</Form.Label>
+                <Form.Group>
+                <h3 style={{marginBottom: "50px", fontWeight: "400"}}>Write your thoughts</h3>
                 <Form.Control
                     type="text"
                     placeholder="Enter Content"
                     onChange={(e) => setContent(e.target.value)}
                     value={content}
+                    as="textarea"
+                    style={{height: "400px", marginBottom: "50px", fontSize: "20px"}}
                 />
                 </Form.Group>
                 <Button variant="primary" onClick={async (e) => {
@@ -71,7 +80,7 @@ export default function JournalApp() {
                 }}>
                 Edit
                 </Button>
-                <Button variant="primary" onClick={async (e) => {
+                <Button style={{marginLeft: "20px", backgroundColor: "rgb(255, 124, 124)", border:"none"}} onClick={async (e) => {
                     deleteJournal();
                 }}>
                 Delete
