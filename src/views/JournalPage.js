@@ -48,7 +48,7 @@ export default function JournalPage() {
     };
 
     return (
-    <>
+    <main>
     <AppNavBar/>
     <Container>
         <h1 className="my-3">My Journal</h1>
@@ -69,7 +69,7 @@ export default function JournalPage() {
 
         </Container>
     </Container>
-    </>
+    </main>
     )
 
 }

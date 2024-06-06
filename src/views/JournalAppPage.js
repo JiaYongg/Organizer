@@ -52,7 +52,7 @@ export default function JournalApp() {
 
 
     return (
-        <>
+        <main  styles={{display: "flex", height: "100vh"}}>
         <AppNavBar/>
         <Container>
             <h1 className="my-3">My Journal</h1>
@@ -79,6 +79,6 @@ export default function JournalApp() {
             </Form>
             <p></p>
         </Container>
-        </>
+        </main>
         )
 }

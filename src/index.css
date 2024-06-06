@@ -38,6 +38,11 @@ input:focus{
   }
 }
 
+main {
+  display: flex;
+  height: 100vh;
+}
+
 :root {
   --primary-color: #3A5DE9;
   --secondary-color: #12A47B;
