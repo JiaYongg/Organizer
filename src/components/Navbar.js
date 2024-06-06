@@ -12,7 +12,7 @@ export default function Navbar() {
                 <img onClick={() => navigate('/')} src="images/org_logo.svg" alt="" />
             </div>
             <div className={styles.nav_component}>
-                <ul className={styles.links}>
+                <ul className={styles.links} style={{display: "flex", alignItems:"center", justifyContent:'space-between'}}>
                     <li><a href="/">Home</a></li>
                     <li><a href="/about">About Us</a></li>
                     <li><a href="/contact">Contact Us</a></li>

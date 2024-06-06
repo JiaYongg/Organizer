@@ -16,14 +16,13 @@
     }
 
     .links {
-        display: flex;
-        /*Im here*/
-        align-items: center;
-        justify-content: space-between;
         width: 100%;
         padding: 0;
         margin: 0;
         font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         
         li {
             list-style: none;
