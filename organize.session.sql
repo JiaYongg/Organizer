@@ -80,6 +80,12 @@ VALUES
 (4, 'Gym session', 1, '2024-06-25 18:00:00', '2024-06-25 19:00:00');
 
 --@block
+INSERT INTO calendar_reminders (title, user_id, start, end)
+VALUES 
+('Gym session', 1, '2024-06-06 18:00:00', '2024-06-06 19:00:00');
+
+
+--@block
 SELECT * FROM calendar_reminders WHERE user_id = 1
 
 --@block 

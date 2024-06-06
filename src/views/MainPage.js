@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react"
 import useDocumentTitle from "../components/useDocumentTitle"
 import axios from "axios";
 import { API, REM } from "../constants"
-import { Calendar, momentLocalizer } from "react-big-calendar"
+import { Calendar, Views, momentLocalizer } from "react-big-calendar"
 import moment from "moment"
 import Popup from "../components/Popup";
 
@@ -19,6 +19,7 @@ export default function MainPage() {
     const [reminders, setReminders] = useState([])
     const [addPopup, setAddPopup] = useState(false)
     const [updatePopup, setUpdatePopup] = useState(false)
+    const [addJournal, setAddJournal] = useState(false) 
 
     const localizer = momentLocalizer(moment)
 
@@ -29,10 +30,26 @@ export default function MainPage() {
     const [updateReminderTitle, setUpdateReminderTitle] = useState("")
     const [updateReminderStart, setUpdateReminderStart] = useState("")
     const [updateReminderEnd, setUpdateReminderEnd] = useState("")
+    const [todaysReminders, setTodaysReminders] = useState([])
 
     const [editId, setEditId] = useState()
 
+    const [toggleCalendar, setToggleCalendar] = useState("m")
+    const [currentView, setCurrentView] = useState(Views.MONTH)
+    const [editDate, setEditDate] = useState('')
+    const [journalContent, setJournalContent] = useState("")
     const navigate = useNavigate()
+
+    const View_list = {
+        "m": Views.MONTH,
+        "d": Views.DAY,
+        "w": Views.WEEK,        
+    }
+
+    function toggleView(letter) {
+        setCurrentView(View_list[letter])
+        setToggleCalendar(letter)
+    }
 
     //Get monthly Events
     async function getMonthEvents() {
@@ -44,8 +61,19 @@ export default function MainPage() {
             });
             const reminders = response.data;
             console.log(reminders)
-
+            let todaysReminders = []
             let formattedReminders = reminders.map((reminder) => {
+
+                if (moment(reminder.start.slice(0, -1)).format("YYYY-MM-DD")== moment(today).format("YYYY-MM-DD")) {
+                    todaysReminders.push(
+                        {
+                            start: moment(reminder.start.slice(0, -1)).toDate(),
+                            end: moment(reminder.end.slice(0, -1)).toDate(),
+                            title: reminder.title,
+                            reminder_id: reminder.reminder_id
+                        }
+                    )
+                }
                 return {
                     start: moment(reminder.start.slice(0, -1)).toDate(),
                     end: moment(reminder.end.slice(0, -1)).toDate(),
@@ -55,10 +83,25 @@ export default function MainPage() {
             })
 
             setReminders(formattedReminders)
+            setTodaysReminders(todaysReminders)
       
         }catch (error){
             console.error( error.message)
         }
+    }
+
+    async function postJournal(calendarDate){
+        console.log(journalContent, calendarDate)
+        const response = await axios.post(API + "/journal/add", {
+            content: journalContent,
+            // id : sessionStorage.getItem("uid"),
+            id : 5,
+            date: calendarDate
+        })
+
+        // console.log(response)
+
+        navigate(`/journal/canvas/${response.data.journal_id}`)
     }
 
     async function addEvent() {
@@ -113,6 +156,8 @@ export default function MainPage() {
     }
 
     async function getJournalId(date) {
+        setAddPopup(false)
+        setUpdatePopup(false)
        const response = await axios.get(API+"/journal/detail", {
             params : {
                 id: 5,
@@ -123,6 +168,9 @@ export default function MainPage() {
         console.log(response.data)
         if (response.data) {
             navigate(`/journal/canvas/${response.data.journal_id}`)
+        } else {
+            setEditDate(date)
+            setAddJournal((prev) => !prev)
         }
 
         console.log(response)
@@ -144,11 +192,13 @@ export default function MainPage() {
         event: (props) => {
             return (
                 <div className={styles.calendar_item} onClick={() => {
+                    setAddPopup(false)
+                    setAddJournal(false)
                     setEditId(props.event.reminder_id)
                     setUpdatePopup((prev) => !prev)
                     getSingleReminder(props.event.reminder_id)
                 }}>
-                    <p>{moment(props.event.start).format('h:mm a')} - {moment(props.event.end).format(' h:mm a')} {props.title}</p>
+                    <p> {props.title}</p>
                 </div>
             )
         },
@@ -164,21 +214,43 @@ export default function MainPage() {
                     <h5>Date: {moment(today).format("DD MMM YYYY")}</h5>
                     
                     <div className={styles.items}>
-                        <div className={styles.item}>
-                            <span>12:00 - 12:45</span>
-                            <p>Doctors Appointment</p>
-                        </div>
+                        {todaysReminders.map((reminder) => {
+                            return(
+                                <div className={styles.item}>
+                                    <span>{moment(reminder.start).format("hh:mm a")} - {moment(reminder.end).format("hh:mm a")}</span>
+                                    <p>{reminder.title}</p>
+                                </div>
+                            )
+                        })}
                     </div>
                 </div>
                 <div className={styles.calander_cont}>
-                    <Calendar localizer={localizer} startAccessor="start" endAccessor="end" events={reminders} components={components} selectable onSelectSlot={(e) => onSelect(e)}/>
+                    <Calendar view={currentView} toolbar={false} localizer={localizer} startAccessor="start" endAccessor="end" events={reminders} components={components} selectable onSelectSlot={(e) => onSelect(e)}/>
                 </div>
-
-                <button className={styles.add_button} onClick={() => {setAddPopup((prev) => !prev)}}>
-                    <p>+</p>
-                </button>
-
+                <div class={styles.toolbar}>
+                    <div class={styles.calendar_controls}>
+                        <div onClick={() => toggleView("d")} className={(toggleCalendar==="d")?`${styles.control} ${styles.active}`: styles.control}>
+                            Day 
+                        </div>
+                        <div onClick={() => toggleView("w")} className={(toggleCalendar==="w")?`${styles.control} ${styles.active}`: styles.control}>
+                            Week 
+                        </div>
+                        <div onClick={() => toggleView("m")} className={(toggleCalendar==="m")?`${styles.control} ${styles.active}`: styles.control}>
+                            Month 
+                        </div>
+                    </div>
+                    <button className={styles.add_button} onClick={() => {
+                        setUpdatePopup(false)
+                        setAddJournal(false)
+                        setAddPopup((prev) => !prev)
+                    }}>
+                        
+                        <p>+</p>
+                    </button>
+                </div>
+                
             </div>
+
             <Popup activePopup={addPopup} setActivePopup={setAddPopup}>
                 <div className={styles.content}>
                     <h1>Add new Reminder</h1>
@@ -209,11 +281,22 @@ export default function MainPage() {
                         <button onClick={() => {
                             deleteEvent()
                         }}>Delete</button> 
-                    </div>
-          
-                    
+                    </div>                
              
                 </div>
+            </Popup>
+
+            <Popup activePopup={addJournal} setActivePopup={setAddJournal}>
+                <div className={styles.content}>
+                    <h3>{moment(editDate).format("DD MMM YYYY")}</h3>
+                    <h1>Add Journal Entry</h1>
+                    <p>Write down you thoughts</p>
+                    <textarea  value={journalContent} onChange={(e) => {setJournalContent(e.target.value)}}/><br></br>
+
+                    <button onClick={() => {
+                        postJournal(editDate)                        
+                    }}>Record Journal</button>        
+                </div>    
             </Popup>
         </main>
     )
