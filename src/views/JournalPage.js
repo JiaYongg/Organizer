@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react"
 import { useNavigate } from "react-router-dom";
-import { Button, Container, Form } from "react-bootstrap";
+import { Image, Button, Container, Form } from "react-bootstrap";
 import axios from "axios"
 import {API} from "../constants"
 import AppNavBar from "../components/AppNavBar";
@@ -20,12 +20,14 @@ export default function JournalPage() {
         console.log(data);
     }
 
-    async function postJournal(){
-        await axios.post(API + "/journal/add", {
-            content: content,
-            id : sessionStorage.getItem("uid"), // need to change the id later to a dynamic one when user logs in
-            date: calendarDate
+    async function getJournal(id){
+        const response = await axios.get(API + "/journal/canvas", {
+            params : {id: id}
         })
+        const data = response.data;
+        setContent(data.content);
+        setCalendarDate(data.calendar_date);
+        console.log(data);
     }
 
     async function deleteJournal(id){
@@ -49,21 +51,35 @@ export default function JournalPage() {
     };
 
     return (
-    <main>
+    <main style={{backgroundColor: "rgb(216, 216, 255)"}}>
     <AppNavBar/>
-    <Container>
-        <h1 className="my-3">My Journal</h1>
+    <Container style={{overflow:"auto", padding: "20px", backgroundColor: "white"}}>
         <Container>
+            {(journalList.length === 0) ? <><div style={{display:"flex", alignItems: "center", flexDirection:"column"}}><h1>No Journal Entries Found</h1><Image style={{height: "700px"}} src="images/empty-journal.jpg"></Image> </div></>: null}
         {     journalList.map((journal) => {
                 return (
-                    <Container>
-                        <a href={`/journal/canvas/${journal.journal_id}`}> <li>Journal Number: {journal.journal_id} - {formatDate(journal.calendar_date)}</li></a>
-                        <Button variant="primary" onClick={async (e) => {deleteJournal(journal.journal_id);}}>Delete</Button>
+                    <Container onClick={
+                        () => {
+                            getJournal(journal.journal_id)
+                        }
+                    } style={{cursor: "pointer", display:"flex", alignItems: "center", marginBottom : "10px", padding: "30px", backgroundColor : "white", borderBottom: "1px solid grey"}}>
+                        <Image src='images/book.jpg' width={"10%"} height={"10%"}/>
+                        <div style={{marginLeft:"20px"}}>
+                            <strong><p style={{fontSize: "20px"}}>{formatDate(journal.calendar_date)}</p></strong>
+                            <a href={`/journal/canvas/${journal.journal_id}`}><Button variant="primary">Edit</Button></a>
+                        </div>
                     </Container> 
                 
         )})}
 
         </Container>
+    </Container>
+
+    <Container style={{padding:"30px", height: "100%"}}>
+        <div style={{backgroundColor: "white", height: "100%", padding:"30px", borderRadius: "5px"}}>
+            <h1>{calendarDate ? formatDate(calendarDate): "Choose a Journal"}</h1>
+            <p>{content}</p>
+        </div>
     </Container>
     </main>
     )
