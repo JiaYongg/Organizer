@@ -144,21 +144,25 @@
         .phone {
             transform: translateY(-100px) translateX(-50px);
             width: 120%;
+            opacity: 0;
+        }
+
+        .phone.animate {
             animation: floater 3.5s 2s infinite ease-in-out,
             fade 1s forwards,
             moveUp 1s forwards
-
-
         }
 
         .notebook {
             transform: translateY(-80px) translateX(170px);
             width: 70%;
             opacity: 0;
+        }
+
+        .notebook.animate {
             animation: floater2 3.5s 2s infinite ease-in-out,
             fade 1s 1s forwards,
             moveUp 1s 1s forwards
-
         }
 
     }
@@ -276,11 +280,11 @@
 
 .powered_by_animate{
     h2 {
-        animation: fade 1s linear 0.5s forwards;
+        animation: fade 1s linear 0.2s forwards;
     }
 
     .speed_carousel {
-        animation: fade 1s linear 1s forwards;
+        animation: fade 1s linear 0.5s forwards;
     }
 }
 

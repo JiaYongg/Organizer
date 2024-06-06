@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react"
-import { convertToSQLDatetime, convertToSQLDate, getThisMonth } from "../components/dateHandling"
+import useDocumentTitle from "../components/useDocumentTitle"
 import axios from "axios";
 import { API, REM } from "../constants"
 import { Calendar, momentLocalizer } from "react-big-calendar"
@@ -12,8 +12,10 @@ import { useNavigate } from "react-router-dom";
 
 export default function MainPage() {
 
-    const id = 1
+    const today = new Date()
 
+    const id = 1
+    useDocumentTitle("Calander Board")
     const [reminders, setReminders] = useState([])
     const [addPopup, setAddPopup] = useState(false)
     const [updatePopup, setUpdatePopup] = useState(false)
@@ -153,17 +155,30 @@ export default function MainPage() {
     }
 
     return (
-        <main>
+        <main className={`${styles.main_page} Lato`}>
             
             <AppNavBar/>
-            <div className={styles.calander_cont}>
-                <Calendar localizer={localizer} startAccessor="start" endAccessor="end" events={reminders} components={components} selectable onSelectSlot={(e) => onSelect(e)}/>
+            <div className={styles.calendar_component}>
+                <div className={styles.today_items}>
+                    <h3>Todays Events</h3>
+                    <h5>Date: {moment(today).format("DD MMM YYYY")}</h5>
+                    
+                    <div className={styles.items}>
+                        <div className={styles.item}>
+                            <span>12:00 - 12:45</span>
+                            <p>Doctors Appointment</p>
+                        </div>
+                    </div>
+                </div>
+                <div className={styles.calander_cont}>
+                    <Calendar localizer={localizer} startAccessor="start" endAccessor="end" events={reminders} components={components} selectable onSelectSlot={(e) => onSelect(e)}/>
+                </div>
+
+                <button className={styles.add_button} onClick={() => {setAddPopup((prev) => !prev)}}>
+                    <p>+</p>
+                </button>
+
             </div>
-
-            <button className={styles.add_button} onClick={() => {setAddPopup((prev) => !prev)}}>
-                <p>+</p>
-            </button>
-
             <Popup activePopup={addPopup} setActivePopup={setAddPopup}>
                 <div className={styles.content}>
                     <h1>Add new Reminder</h1>

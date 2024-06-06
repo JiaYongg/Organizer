@@ -11,9 +11,15 @@ export default function AppNavBar() {
 
     return (
         <div className={styles.nav}>
-        <div>Header</div>
+        <div className={styles.img_div}>
+            <img src="images/logo.png" alt="" />
+        </div>
+        <ul className={styles.links}>
+            <li><a href="/main"><i className='bx bx-calendar'></i><p>Calendar</p></a></li>
+            <li><a href="/journal"><i className='bx bx-book-bookmark' /><p>Journals</p></a></li>
+        </ul>
         <div>
-            <button onClick={() =>logout()}>Logout</button>
+            <button onClick={() =>logout()}><i className='bx bx-log-out-circle' ></i><p>Log out</p></button>
         </div>
     </div>
     )

@@ -13,7 +13,7 @@ export default function SignUpPage() {
 
     const navigate = useNavigate()
 
-    useDocumentTitle("Sign Up")
+    useDocumentTitle("Ready to Organize?")
     
     async function signUp() {
         const signup = {
@@ -74,7 +74,7 @@ export default function SignUpPage() {
                         </div>
                     </div>
                     <div className = {styles.login}>
-                        <p>Already a member? <a href="" className="highlight-1">Login here</a></p>
+                        <p>Already a member? <a href="/login" className="highlight-1">Login here</a></p>
                     </div>
 
                 </form>

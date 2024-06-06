@@ -49,6 +49,11 @@ export default function LandingPage() {
 
     });
 
+    const { ref:refRight, inView:inViewRight } = useInView({
+        triggerOnce: true, 
+
+    });
+
     function Card ({image, name, review, reviewDate}){
         return (
             <div className={styles.card}>
@@ -107,7 +112,7 @@ export default function LandingPage() {
                     </p>
                 </div>
             </section>
-            <section className={`${styles.detailsSection} poppins`} >
+            <section className={`${styles.detailsSection} poppins`} ref={refRight}>
                 <div className={styles.description}>
                     <div className={styles.desc_head}>
                         <p>WHY US?</p>
@@ -123,8 +128,8 @@ export default function LandingPage() {
 
                 <div className={styles.right_image}>
                     <img   src="images/blob.png" alt="" />
-                    <img className={styles.phone} src="images/phone.png" alt="" />
-                    <img className={styles.notebook}  src="images/notepad.png" alt="" />
+                    <img className={inViewRight?`${styles.phone} ${styles.animate}`: styles.phone} src="images/phone.png" alt="" />
+                    <img className={inViewRight?`${styles.notebook} ${styles.animate}`: styles.notebook}  src="images/notepad.png" alt="" />
                 </div>
             </section>
             <section className={`${styles.laptop} poppins`} >

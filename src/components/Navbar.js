@@ -1,12 +1,15 @@
 import React, {useEffect, useState} from "react"
 import styles from "../css/NavBar.module.css"
+import { useNavigate } from "react-router-dom"
 
 export default function Navbar() {
+
+    const navigate = useNavigate()
 
     return (
         <section className={`${styles.navbar} poppins`}>
             <div className={styles.nav_component}>
-                <img src="images/org_logo.svg" alt="" />
+                <img onClick={() => navigate('/')} src="images/org_logo.svg" alt="" />
             </div>
             <div className={styles.nav_component}>
                 <ul className={styles.links}>
@@ -17,7 +20,7 @@ export default function Navbar() {
                 </ul>
             </div>
             <div className={styles.nav_component}>
-                <button className={`${styles.login_button} poppins`}>Login</button>
+                <button onClick={() => navigate('/login')} className={`${styles.login_button} poppins`}>Login</button>
             </div>
         </section>
     )

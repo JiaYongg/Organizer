@@ -1,19 +1,55 @@
-
-.nav {
+.main_page {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 40px;
-    margin-bottom: 20px;
+    height: 100vh;
+}
+
+
+.calendar_component {
+    display: flex;
+    
+}
+
+.today_items {
+    padding: 40px 20px;
     -webkit-box-shadow: 0px 0px 23px -3px rgba(0,0,0,0.27);
     -moz-box-shadow: 0px 0px 23px -3px rgba(0,0,0,0.27);
     box-shadow: 0px 0px 23px -3px rgba(0,0,0,0.27);
+    text-align: start;
+    width: 250px;
+
+    h3 {
+        font-size: 30px;
+    }
+    
+    h5 {
+        margin-top: 10px;
+        font-size: 18px;
+        font-weight: 400;
+        color: rgb(153, 153, 153);
+    }
+
+    .items {
+        margin-top: 30px;
+    }
+
+    .item {
+
+        padding: 10px;
+        background: rgb(233, 233, 255);
+        border-radius: 5px;
+
+        p {
+            padding: 0;
+            padding-bottom: 7px;
+            margin: 0;
+        }
+    }
 }
 
 .calander_cont {
     margin: 0px 60px;
-
-    height: calc(100vh - 150px);
+    padding: 60px;
+    height: 100%;
     min-height: 600px;
 }
 
